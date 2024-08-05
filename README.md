@@ -9,9 +9,9 @@
 * Dependencies : Web, lombok, JPA, H2 Database, Thymeleaf
 
 ## 목차
-업데이트 중 : fff
+업데이트 중 : 
 
-* [step-01. Mockmvc Test - SSR, JSON]()
+* [step-01. Mockmvc Test - SSR, JSON](https://github.com/sangminparkk/spring-boot-basic/tree/step-01)
 
 ### 미정
 
