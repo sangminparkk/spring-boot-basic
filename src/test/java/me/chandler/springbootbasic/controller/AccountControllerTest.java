@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,6 +40,18 @@ class AccountControllerTest {
                         .param("age", "20"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("signUp account"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("계정 등록 - JSON")
+    public void signUp_json() throws Exception {
+        mockMvc.perform(post("/account")
+                        .contentType(APPLICATION_JSON)
+                        .content("{\"name\":\"memberA\", \"age\":\"20\"}"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("memberA"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value("20"))
                 .andDo(print());
     }
 
