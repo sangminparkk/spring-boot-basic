@@ -87,3 +87,29 @@ public class AccountController {
 * spring MVC는 요청 파라미터를 Account 객체의 필드값과 자동으로 매핑합니다. 전달 받은 데이터는 서버에서 비지니스로직에 따라 처리합니다.
 * controller가 읽은 데이터는 `@Slf4j`에 의해 아래와 같이 로그 메세지로 확인할 수 있습니다.
 * 2024-08-06T14:06:16.214+09:00  INFO 20808 --- [spring-boot-basic] [    Test worker] m.c.s.controller.AccountController       : name=memberA, age=20
+
+## HTTP 요청/응답 검증(3) - JSON
+클라이언트에서 JSON 데이터를 서버로 전달했을때 응답을 검증하는 코드입니다.
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+class AccountControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+    
+    @Test
+    @DisplayName("계정 등록 - JSON")
+    public void signUp_json() throws Exception {
+        mockMvc.perform(post("/account")
+                        .contentType(APPLICATION_JSON)
+                        .content("{\"name\":\"memberA\", \"age\":\"20\"}"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("memberA"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value("20"))
+                .andDo(print());
+    }
+}
+```
+* `jsonPath` : json 표현식을 사용하여 메세지 바디의 json 데이터를 검증하는 메소드입니다.
+* 
